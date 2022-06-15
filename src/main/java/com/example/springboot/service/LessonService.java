@@ -2,7 +2,7 @@ package com.example.springboot.service;
 
 import com.example.springboot.entity.CourseSelection;
 import com.example.springboot.entity.Lesson;
-import com.example.springboot.entity.User;
+import com.example.springboot.entity.Student;
 import com.example.springboot.repository.CourseSelectionRepository;
 import com.example.springboot.repository.LessonRepository;
 import com.example.springboot.repository.UserRepository;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class LessonService {
@@ -35,8 +34,8 @@ public class LessonService {
 
     public List<LessonResponse> getNotSelectLesson(String account) {
         List<LessonResponse> lessonResponseList = new ArrayList<>();
-        Optional<User> user = userRepository.findByAccount(account);
-        Optional<List<CourseSelection>> courseSelections = courseSelectionRepository.findCourseSelectionByUser(user.get());
+        Optional<Student> student = userRepository.findByAccount(account);
+        Optional<List<CourseSelection>> courseSelections = courseSelectionRepository.findCourseSelectionByStudent(student.get());
         int lessonSize = lessonRepository.findAll().size();
         List<Lesson> lessonList = lessonRepository.findAll();
         for (int i = 0; i < lessonSize; i++) {

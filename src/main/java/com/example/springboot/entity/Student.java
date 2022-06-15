@@ -2,23 +2,16 @@ package com.example.springboot.entity;
 
 import com.example.springboot.request.UserRegisterRequest;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.yubico.webauthn.data.ByteArray;
-import com.yubico.webauthn.data.UserIdentity;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import javax.annotation.Nullable;
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-public class User {
-    public User(Long id) {
-        this.id = id;
-    }
-
-    public User() {
-
-    }
-
+@Getter
+@NoArgsConstructor
+public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,11 +23,10 @@ public class User {
 
 
     @Column(name = "email", columnDefinition = "varchar(40)")
-    @Nullable
     private String email;
 
     @JsonManagedReference
-    @OneToMany(mappedBy="user",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
     private Set<CourseSelection> courseSelection;
 
     public Set<CourseSelection> getCourseSelection() {
@@ -53,7 +45,7 @@ public class User {
         this.account = account;
     }
 
-    public User(UserRegisterRequest user) {
+    public Student(UserRegisterRequest user) {
         this.account = user.getAccount();
         this.password = user.getPassword();
     }

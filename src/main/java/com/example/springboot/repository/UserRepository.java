@@ -1,17 +1,16 @@
 package com.example.springboot.repository;
 
-import com.example.springboot.entity.User;
-import com.yubico.webauthn.data.ByteArray;
-import io.swagger.models.auth.In;
+import com.example.springboot.entity.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
-
-public interface UserRepository extends JpaRepository<User, Long> {
-    Optional<User> findByEmail(String email);
+@Repository
+public interface UserRepository extends JpaRepository<Student, Long> {
+    Optional<Student> findByEmail(String email);
 //    Optional<User> findByHandle(ByteArray handle);
-    Optional<User> findById(Long id);
+    Optional<Student> findById(Long id);
 
-    Optional<User> findByAccount(String account);
+    Optional<Student> findByAccount(String account);
 
 }

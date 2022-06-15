@@ -1,10 +1,5 @@
 package com.example.springboot.request;
 
-import com.example.springboot.entity.Lesson;
-import com.example.springboot.entity.User;
-
-import javax.persistence.*;
-
 public class CourseSelectionRequest {
 
     private Long lesson_id=0L;

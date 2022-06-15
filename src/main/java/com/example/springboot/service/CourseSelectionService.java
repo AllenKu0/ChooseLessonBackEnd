@@ -2,11 +2,10 @@ package com.example.springboot.service;
 
 import com.example.springboot.entity.CourseSelection;
 import com.example.springboot.entity.Lesson;
-import com.example.springboot.entity.User;
+import com.example.springboot.entity.Student;
 import com.example.springboot.repository.CourseSelectionRepository;
 import com.example.springboot.repository.LessonRepository;
 import com.example.springboot.repository.UserRepository;
-import com.example.springboot.request.CourseSelectionFindRequest;
 import com.example.springboot.response.CourseSelectionResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +17,7 @@ import java.util.Optional;
 @Service
 public class CourseSelectionService {
     @Autowired
-    private CourseSelectionRepository courseSelectionRespority;
+    private CourseSelectionRepository courseSelectionRepository;
 
     @Autowired
     private LessonRepository lessonRepository;
@@ -28,23 +27,23 @@ public class CourseSelectionService {
 
     public void saveCourse(com.example.springboot.request.CourseSelectionRequest courseSelectionRequest) throws Exception {
 
-        Optional<User> user = userRepository.findByAccount(courseSelectionRequest.getUser_name());
+        Optional<Student> user = userRepository.findByAccount(courseSelectionRequest.getUser_name());
         Optional<Lesson> lesson = lessonRepository.findById(courseSelectionRequest.getLesson_id());
         if (lesson.isPresent() && user.isPresent()) {
             CourseSelection courseSelection = new CourseSelection(lesson.get(),
                     user.get());
-            courseSelectionRespority.save(courseSelection);
+            courseSelectionRepository.save(courseSelection);
         } else {
             throw new Exception("no find");
         }
     }
 
     public void deleteCourse(com.example.springboot.request.CourseSelectionRequest courseSelectionRequest) throws Exception {
-        Optional<User> user = userRepository.findByAccount(courseSelectionRequest.getUser_name());
+        Optional<Student> user = userRepository.findByAccount(courseSelectionRequest.getUser_name());
         Optional<Lesson> lesson = lessonRepository.findById(courseSelectionRequest.getLesson_id());
         if (lesson.isPresent() && user.isPresent()) {
-            Optional<CourseSelection> courseSelection = courseSelectionRespority.findCourseSelectionByUserAndLesson(user.get(), lesson.get());
-            courseSelection.ifPresent(selection -> courseSelectionRespority.delete(selection));
+            Optional<CourseSelection> courseSelection = courseSelectionRepository.findCourseSelectionByStudentAndLesson(user.get(), lesson.get());
+            courseSelection.ifPresent(selection -> courseSelectionRepository.delete(selection));
         } else {
             throw new Exception("no find");
         }
@@ -52,11 +51,11 @@ public class CourseSelectionService {
 
     public List<CourseSelectionResponse> getAllLesson(String account) {
         List<CourseSelectionResponse> courseSelectionResponses = new ArrayList<>();
-        Optional<User> user = userRepository.findByAccount(account);
-        if (user.isPresent()) {
-            if (courseSelectionRespority.findCourseSelectionByUser(user.get()).isPresent()) {
-                for (int i = 0; i < courseSelectionRespority.findCourseSelectionByUser(user.get()).get().size(); i++) {
-                    CourseSelection courseSelection = courseSelectionRespority.findCourseSelectionByUser(user.get()).get().get(i);
+        Optional<Student> student = userRepository.findByAccount(account);
+        if (student.isPresent()) {
+            if (courseSelectionRepository.findCourseSelectionByStudent(student.get()).isPresent()) {
+                for (int i = 0; i < courseSelectionRepository.findCourseSelectionByStudent(student.get()).get().size(); i++) {
+                    CourseSelection courseSelection = courseSelectionRepository.findCourseSelectionByStudent(student.get()).get().get(i);
                     courseSelectionResponses.add(new CourseSelectionResponse(
                             courseSelection.getLesson().getLessonId(),
                             courseSelection.getLesson().getLessonName(),

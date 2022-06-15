@@ -1,6 +1,6 @@
 package com.example.springboot.repository;
 
-import com.example.springboot.entity.Authenticator;
+//import com.example.springboot.entity.Authenticator;
 import com.example.springboot.entity.Teach;
 import com.example.springboot.entity.Teacher;
 import org.springframework.data.repository.CrudRepository;

@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Optional;
 
 @Entity
 @Getter
@@ -23,12 +22,12 @@ public class CourseSelection {
 
     @JsonBackReference
     @ManyToOne
-    @JoinColumn(name = "pk_user", referencedColumnName = "id")
-    private User user;
+    @JoinColumn(name = "pk_student", referencedColumnName = "id")
+    private Student student;
 
-    public CourseSelection(Lesson lesson, User user) {
+    public CourseSelection(Lesson lesson, Student student) {
         this.lesson = lesson;
-        this.user = user;
+        this.student = student;
     }
 
     public Long getChooseId() {
@@ -47,11 +46,11 @@ public class CourseSelection {
         this.lesson = lesson;
     }
 
-    public User getUser() {
-        return user;
+    public Student getStudent() {
+        return student;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setStudent(Student student) {
+        this.student = student;
     }
 }
