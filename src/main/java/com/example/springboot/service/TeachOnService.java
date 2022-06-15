@@ -31,29 +31,27 @@ public class TeachOnService {
         }
     }
 
-    public List<ClassRoomResponse> getClassRoomByLesson(Long lessonId) {
-        List<ClassRoomResponse> classRoomResponses = new ArrayList<>();
-        Optional<Lesson> lesson = lessonRepository.findById(lessonId);
+    public ClassRoomResponse getClassRoomByLesson(String lessonName) {
+        Optional<Lesson> lesson = lessonRepository.findByLessonName(lessonName);
         Optional<TeachOn> teachOn = teachOnRepository.findByLesson(lesson.get());
+        ClassRoomResponse classRoomResponse = null;
         if (lesson.isPresent() && teachOn.isPresent()) {
             Optional<ClassRoom> classRoom = classRoomRepository.findById(teachOn.get().getClassRoom().getClassId());
-            ClassRoomResponse classRoomResponse = new ClassRoomResponse(
+            classRoomResponse = new ClassRoomResponse(
                     classRoom.get().getClassId(),
                     classRoom.get().getClassName(),
                     classRoom.get().getClassLocation(),
                     classRoom.get().getClassPhoneNumber()
             );
-            classRoomResponses.add(classRoomResponse);
         }else{
-            ClassRoomResponse classRoomResponse = new ClassRoomResponse(
+            classRoomResponse = new ClassRoomResponse(
                     0l,
                    "未指定",
                     "未指定",
                     "無"
             );
-            classRoomResponses.add(classRoomResponse);
         }
-        return classRoomResponses;
+        return classRoomResponse;
     }
 
     public void deleteTeachOn(TeachOnRequest teachOnRequest){

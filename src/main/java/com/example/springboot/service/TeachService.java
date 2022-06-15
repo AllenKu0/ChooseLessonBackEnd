@@ -41,7 +41,7 @@ public class TeachService {
         Optional<Teach> teach = techRepository.findTeachByLesson(lesson.get());
 //        Optional<Teacher> teacher = teacherRepository.findTeacherByTeach(teach.get());
         if (lesson.isPresent() && teach.isPresent()) {
-            Optional<Teacher> teacher = teacherRepository.findTeacherByTeach(teach.get());
+            Optional<Teacher> teacher = teacherRepository.findTeacherByTeacherId(teach.get().getTeacher().getTeacherId());
             TeacherResponse teacherResponse = new TeacherResponse(
                     teacher.get().getTeacherId(),
                     teacher.get().getTeacherName(),

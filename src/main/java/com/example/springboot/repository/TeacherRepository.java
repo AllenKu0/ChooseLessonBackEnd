@@ -12,5 +12,7 @@ import java.util.Optional;
 public interface TeacherRepository extends CrudRepository<Teacher, Long> {
     Optional<Teacher> findTeacherByTeacherName(String teacher_name);
 
+    Optional<Teacher> findTeacherByTeacherId(Long teacherId);
+
     Optional<Teacher> findTeacherByTeach(Teach teach);
 }

@@ -32,6 +32,8 @@ public class BelongService {
             if(belongRepository.findClassRoomByTeacher(teacher.get()).isPresent()){
                 Office office = belongRepository.findClassRoomByTeacher(teacher.get()).get().getOffice();
                 officeResponse = new OfficeResponse(office.getOfficeId(),office.getOfficeName(),office.getOfficePhoneNumber());
+            }else{
+                officeResponse = new OfficeResponse(0l,"未指定","無");
             }
         }
         return officeResponse;

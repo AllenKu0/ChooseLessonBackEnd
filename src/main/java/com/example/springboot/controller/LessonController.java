@@ -42,11 +42,11 @@ public class LessonController {
     @GetMapping("/getNotSelect")
     @ApiOperation(value ="獲取未選課程")
     public ResponseEntity<List<LessonResponse>> getNotSelectLesson(@RequestParam String account) {
-        List<LessonResponse> response=lessonService.getNotSelectLesson(account);
-        if (response.size()>0){
+        try {
+            List<LessonResponse> response=lessonService.getNotSelectLesson(account);
             return new ResponseEntity<>(response, HttpStatus.OK);
-        }
-        else {
+        }catch (Exception e){
+            System.out.print(e);
             return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
         }
     }

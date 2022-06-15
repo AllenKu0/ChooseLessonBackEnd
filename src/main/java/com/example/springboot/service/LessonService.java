@@ -38,26 +38,31 @@ public class LessonService {
         Optional<User> user = userRepository.findByAccount(account);
         Optional<List<CourseSelection>> courseSelections = courseSelectionRepository.findCourseSelectionByUser(user.get());
         int lessonSize = lessonRepository.findAll().size();
+        List<Lesson> lessonList = lessonRepository.findAll();
         for (int i = 0; i < lessonSize; i++) {
             if (courseSelections.isPresent()) {
                 int courseSelectSize = courseSelections.get().size();
+                boolean isSelected = false;
                 for (int j = 0; j < courseSelectSize; j++) {
-                    if (!courseSelections.get().get(j).getLesson().getLessonName()
-                            .equals(lessonRepository.findAll().get(i).getLessonName())) {
-                        Lesson lesson = lessonRepository.findAll().get(i);
-                        LessonResponse response = new LessonResponse(
-                                lesson.getLessonId().intValue(),
-                                lesson.getLessonName(),
-                                lesson.getLessonCredit(),
-                                lesson.getLessonStatus()
-                        );
-                        lessonResponseList.add(response);
+                    if (lessonList.get(i).getLessonName() == courseSelections.get().get(j).getLesson().getLessonName()) {
+                        isSelected = true;
+                        break;
                     }
+                }
+                if (!isSelected) {
+                    Lesson lesson = lessonList.get(i);
+                    LessonResponse response = new LessonResponse(
+                            lesson.getLessonId().intValue(),
+                            lesson.getLessonName(),
+                            lesson.getLessonCredit(),
+                            lesson.getLessonStatus()
+                    );
+                    lessonResponseList.add(response);
                 }
             }
         }
         return lessonResponseList;
-    }
+}
 
     public List<LessonResponse> getAllLesson() {
         List<LessonResponse> lessonResponseList = new ArrayList<>();

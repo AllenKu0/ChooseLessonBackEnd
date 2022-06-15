@@ -20,12 +20,11 @@ public class TeachOnController {
     TeachOnService teachOnService;
 
     @GetMapping("/getClassRoomByLesson")
-    public ResponseEntity<?> getClassRoomByLesson(@RequestParam Long lessonId) {
-        List<ClassRoomResponse> response =teachOnService.getClassRoomByLesson(lessonId);
-        if (response.size()>0){
+    public ResponseEntity<?> getClassRoomByLesson(@RequestParam String lessonName) {
+        ClassRoomResponse response =teachOnService.getClassRoomByLesson(lessonName);
+        try{
             return new ResponseEntity<>(response, HttpStatus.OK);
-        }
-        else {
+        }catch (Exception e){
             return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
         }
     }
