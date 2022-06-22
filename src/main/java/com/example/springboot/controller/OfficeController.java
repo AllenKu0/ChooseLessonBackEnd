@@ -23,7 +23,7 @@ public class OfficeController {
             return new ResponseEntity<>("New Office Successes", HttpStatus.OK);
         }catch (Exception e){
             System.out.print(e);
-            return new ResponseEntity<>(e,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("New Office Fail",HttpStatus.BAD_REQUEST);
         }
     }
 

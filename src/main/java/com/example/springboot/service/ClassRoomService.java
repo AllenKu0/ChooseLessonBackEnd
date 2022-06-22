@@ -1,6 +1,7 @@
 package com.example.springboot.service;
 
 import com.example.springboot.entity.*;
+import com.example.springboot.exception.AlreadyExistsException;
 import com.example.springboot.repository.ClassRoomRepository;
 import com.example.springboot.request.ClassRoomRequest;
 import com.example.springboot.response.ClassRoomResponse;
@@ -19,7 +20,12 @@ public class ClassRoomService {
     public void saveClassRoom(ClassRoomRequest classRoomRequest){
         ClassRoom classRoom = new ClassRoom(classRoomRequest.getClassName()
                 ,classRoomRequest.getClassPhoneNumber(),classRoomRequest.getClassLocation());
-        classRoomRepository.save(classRoom);
+        Optional<ClassRoom> classRoomOptional = classRoomRepository.findByClassName(classRoom.getClassName());
+        if(classRoomOptional.isPresent()){
+            throw new AlreadyExistsException("Save failed, the classRoom already exist.");
+        }else{
+            classRoomRepository.save(classRoom);
+        }
     }
 
     public List<ClassRoomResponse> getAllClassRoom(){

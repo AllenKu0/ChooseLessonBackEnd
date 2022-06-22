@@ -3,6 +3,7 @@ package com.example.springboot.service;
 import com.example.springboot.entity.CourseSelection;
 import com.example.springboot.entity.Lesson;
 import com.example.springboot.entity.Student;
+import com.example.springboot.exception.AlreadyExistsException;
 import com.example.springboot.repository.CourseSelectionRepository;
 import com.example.springboot.repository.LessonRepository;
 import com.example.springboot.repository.UserRepository;
@@ -29,10 +30,16 @@ public class CourseSelectionService {
 
         Optional<Student> user = userRepository.findByAccount(courseSelectionRequest.getUser_name());
         Optional<Lesson> lesson = lessonRepository.findById(courseSelectionRequest.getLesson_id());
+
         if (lesson.isPresent() && user.isPresent()) {
             CourseSelection courseSelection = new CourseSelection(lesson.get(),
                     user.get());
-            courseSelectionRepository.save(courseSelection);
+            Optional<CourseSelection> courseSelectionOptional = courseSelectionRepository.findCourseSelectionByStudentAndLesson(user.get(), lesson.get());
+            if (courseSelectionOptional.isPresent()) {
+                throw new AlreadyExistsException("Save failed, the student had already selected this Lesson.");
+            } else {
+                courseSelectionRepository.save(courseSelection);
+            }
         } else {
             throw new Exception("no find");
         }

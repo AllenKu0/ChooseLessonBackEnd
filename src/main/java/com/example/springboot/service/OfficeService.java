@@ -1,6 +1,7 @@
 package com.example.springboot.service;
 
 import com.example.springboot.entity.Office;
+import com.example.springboot.exception.AlreadyExistsException;
 import com.example.springboot.repository.OfficeRepository;
 import com.example.springboot.request.OfficeRequest;
 import com.example.springboot.response.OfficeResponse;
@@ -18,7 +19,12 @@ public class OfficeService {
 
     public void saveOffice(OfficeRequest officeRequest){
         Office office = new Office(officeRequest.getOfficeName(),officeRequest.getOfficePhoneNumber());
-        officeRepository.save(office);
+        Optional<Office> officeOptional = officeRepository.findOfficeByOfficeName(office.getOfficeName());
+        if(officeOptional.isPresent()){
+            throw new AlreadyExistsException("Save failed, the office already exist.");
+        }else{
+            officeRepository.save(office);
+        }
     }
 
     public List<OfficeResponse> getAllOffice(){

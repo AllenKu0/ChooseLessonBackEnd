@@ -2,6 +2,7 @@ package com.example.springboot.service;
 
 import com.example.springboot.entity.Lesson;
 import com.example.springboot.entity.Teacher;
+import com.example.springboot.exception.AlreadyExistsException;
 import com.example.springboot.repository.LessonRepository;
 import com.example.springboot.repository.TeacherRepository;
 import com.example.springboot.request.TeacherRequest;
@@ -20,6 +21,10 @@ public class TeacherService {
 
     public void saveTeacher(TeacherRequest teacherRequest) {
         Teacher teacher = new Teacher(teacherRequest.getTeacherName(),teacherRequest.getTeacherPhoneNumber());
+        Optional<Teacher> teacherOptional = teacherRepository.findTeacherByTeacherName(teacher.getTeacherName());
+        if(teacherOptional.isPresent()){
+            throw new AlreadyExistsException("Save failed, the teacher already exist.");
+        }
         teacherRepository.save(teacher);
     }
 

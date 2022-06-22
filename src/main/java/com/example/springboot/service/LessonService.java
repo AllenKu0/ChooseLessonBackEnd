@@ -3,6 +3,7 @@ package com.example.springboot.service;
 import com.example.springboot.entity.CourseSelection;
 import com.example.springboot.entity.Lesson;
 import com.example.springboot.entity.Student;
+import com.example.springboot.exception.AlreadyExistsException;
 import com.example.springboot.repository.CourseSelectionRepository;
 import com.example.springboot.repository.LessonRepository;
 import com.example.springboot.repository.UserRepository;
@@ -29,7 +30,12 @@ public class LessonService {
     public void saveLesson(LessonRequest lessonRequest) {
         Lesson lesson = new Lesson(lessonRequest.getLesson_name()
                 , lessonRequest.getLesson_credit(), lessonRequest.getLesson_status());
-        lessonRepository.save(lesson);
+        Optional<Lesson> lessonOptional = lessonRepository.findByLessonName(lesson.getLessonName());
+        if(lessonOptional.isPresent()){
+            throw new AlreadyExistsException("Save failed, the lesson already exist.");
+        }else{
+            lessonRepository.save(lesson);
+        }
     }
 
     public List<LessonResponse> getNotSelectLesson(String account) {
