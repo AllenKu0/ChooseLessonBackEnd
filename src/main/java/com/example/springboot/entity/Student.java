@@ -15,19 +15,30 @@ public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Column(name = "name", columnDefinition = "varchar(40)")
+    private String name;
     @Column(name = "account", columnDefinition = "varchar(68)", nullable = false)
     private String account;
     @Column(name = "password", columnDefinition = "varchar(68)", nullable = false)
     private String password;
 
-
     @Column(name = "email", columnDefinition = "varchar(40)")
     private String email;
+
+    @Column(name = "student_phone", columnDefinition = "varchar(40)")
+    private String student_phone;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
     private Set<CourseSelection> courseSelection;
+
+    public String getStudent_phone() {
+        return student_phone;
+    }
+
+    public void setStudent_phone(String student_phone) {
+        this.student_phone = student_phone;
+    }
 
     public Set<CourseSelection> getCourseSelection() {
         return courseSelection;
@@ -36,7 +47,13 @@ public class Student {
     public void setCourseSelection(Set<CourseSelection> courseSelection) {
         this.courseSelection = courseSelection;
     }
+    public String getName() {
+        return name;
+    }
 
+    public void setName(String name) {
+        this.name = name;
+    }
     public String getAccount() {
         return account;
     }
@@ -48,6 +65,7 @@ public class Student {
     public Student(UserRegisterRequest user) {
         this.account = user.getAccount();
         this.password = user.getPassword();
+        this.name = user.getName();
     }
 
     public Long getId() {

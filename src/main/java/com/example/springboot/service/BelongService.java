@@ -25,12 +25,12 @@ public class BelongService {
     @Autowired
     OfficeRepository officeRepository;
 
-    public OfficeResponse getClassRoomByTeacherId(String teacherName){
+    public OfficeResponse getOfficeByTeacherId(String teacherName){
         OfficeResponse officeResponse = null;
         Optional<Teacher> teacher = teacherRepository.findTeacherByTeacherName(teacherName);
         if(teacher.isPresent()){
-            if(belongRepository.findClassRoomByTeacher(teacher.get()).isPresent()){
-                Office office = belongRepository.findClassRoomByTeacher(teacher.get()).get().getOffice();
+            if(belongRepository.findOfficeByTeacherWithQuery(teacher.get().getTeacherName()).isPresent()){
+                Office office = belongRepository.findOfficeByTeacher(teacher.get()).get().getOffice();
                 officeResponse = new OfficeResponse(office.getOfficeId(),office.getOfficeName(),office.getOfficePhoneNumber());
             }else{
                 officeResponse = new OfficeResponse(0l,"未指定","無");
@@ -52,8 +52,8 @@ public class BelongService {
         Optional<Teacher> teacher = teacherRepository.findById(belongRequest.getTeacher_id());
 
         if(teacher.isPresent()){
-            if(belongRepository.findClassRoomByTeacher(teacher.get()).isPresent()){
-                Optional<Belong> belong=belongRepository.findClassRoomByTeacher(teacher.get());
+            if(belongRepository.findOfficeByTeacher(teacher.get()).isPresent()){
+                Optional<Belong> belong=belongRepository.findOfficeByTeacher(teacher.get());
                 belongRepository.delete(belong.get());
             }
         }

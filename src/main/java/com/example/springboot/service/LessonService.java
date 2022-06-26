@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+
 public class LessonService {
     @Autowired
     private LessonRepository lessonRepository;
@@ -41,7 +42,7 @@ public class LessonService {
     public List<LessonResponse> getNotSelectLesson(String account) {
         List<LessonResponse> lessonResponseList = new ArrayList<>();
         Optional<Student> student = userRepository.findByAccount(account);
-        Optional<List<CourseSelection>> courseSelections = courseSelectionRepository.findCourseSelectionByStudent(student.get());
+        Optional<List<CourseSelection>> courseSelections = courseSelectionRepository.findCourseByStudentId(student.get().getId());
         int lessonSize = lessonRepository.findAll().size();
         List<Lesson> lessonList = lessonRepository.findAll();
         for (int i = 0; i < lessonSize; i++) {

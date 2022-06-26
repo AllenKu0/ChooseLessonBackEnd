@@ -18,9 +18,9 @@ public class BelongController {
     BelongService belongService;
 
     @GetMapping("/get")
-    public ResponseEntity<? extends Object> getClassRoomByTeacher(@RequestParam String teacherName){
+    public ResponseEntity<? extends Object> getOfficeByTeacher(@RequestParam String teacherName){
         try {
-            return new ResponseEntity<>(belongService.getClassRoomByTeacherId(teacherName),HttpStatus.OK);
+            return new ResponseEntity<>(belongService.getOfficeByTeacherId(teacherName),HttpStatus.OK);
         }catch (Exception e){
             System.out.print(e);
             return new ResponseEntity<>(e,HttpStatus.BAD_REQUEST);

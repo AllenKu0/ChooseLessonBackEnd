@@ -45,11 +45,32 @@ public class UserController {
 //                .expireAfterAccess(5, TimeUnit.MINUTES).build();
 //    }
 
+    @GetMapping("/getAll")
+    @ResponseBody
+    public ResponseEntity<? extends Object> getAll() {
+        try {
+            return new ResponseEntity<>(userService.getAll(),HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.print(e);
+            return new ResponseEntity<>("Get failed",HttpStatus.CONFLICT);
+        }
+    }
+
+    @GetMapping("/get")
+    @ResponseBody
+    public ResponseEntity<? extends Object> getStudent(@RequestParam String account) {
+        try {
+            return new ResponseEntity<>(userService.getStudent(account),HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.print(e);
+            return new ResponseEntity<>("Get failed",HttpStatus.CONFLICT);
+        }
+    }
     @PostMapping("/register")
     @ResponseBody
-    public ResponseEntity<? extends Object> register(@RequestBody @Valid UserRegisterRequest userRegister) {
+    public ResponseEntity<? extends Object> register(@RequestBody UserRegisterRequest userRegister) {
         try {
-            System.out.print("register");
+            System.out.println(userRegister.getName()+"aaaa");
             userService.register(userRegister);
             return new ResponseEntity<>("Register Successes",HttpStatus.OK);
         } catch (Exception e) {
@@ -72,6 +93,29 @@ public class UserController {
             throw new AlreadyExistsException("login failed");
         }
     }
+
+    @PutMapping("updateProfile/{account}")
+    @ResponseBody
+    public ResponseEntity<?> updateStudent(@PathVariable (value = "account") String account,@RequestBody StudentUpdateRequest studentUpdateRequest){
+        try{
+            return new ResponseEntity<>(userService.updateProfile(account,studentUpdateRequest),HttpStatus.OK);
+        }catch (Exception e){
+            System.out.print(e);
+            throw new AlreadyExistsException("student update failed");
+        }
+    }
+
+    @PutMapping("updatePassword/{account}")
+    @ResponseBody
+    public ResponseEntity<?> updatePassWord(@PathVariable (value = "account") String account,@RequestParam String password){
+        try{
+            return new ResponseEntity<>(userService.updatePassWord(account,password),HttpStatus.OK);
+        }catch (Exception e){
+            System.out.print(e);
+            throw new AlreadyExistsException("password update failed");
+        }
+    }
+
 
 
 //    @PostMapping("/welcome")
